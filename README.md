@@ -1,3 +1,18 @@
+## Dev and build:
+just do `flutter pub get` then `cp lib/dummy_dsn.dart lib/dsn.dart`  
+
+then run or `flutter run` (or build)  
+
+### Release:
+make create a `key.properties` in /android/ and add the appropriate content (after having created a keystore from AndroidStudio):  
+```
+storePassword= ................................................
+keyPassword= ................................................
+keyAlias= ..........
+storeFile=C:\\path\\to\\keystore.jks
+```
+then do `flutter run --release` (or build)  
+
 # InvenTree Mobile App
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
