@@ -11,7 +11,12 @@ jobs:
 
   build:
     runs-on: macos-latest
-  
+
+    env:
+      KEY_JKS: ${{ secrets.KEY_JKS }}
+      KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+      ALIAS_PASSWORD: ${{ secrets.ALIAS_PASSWORD }}
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
@@ -29,6 +34,8 @@ jobs:
       uses: gradle/gradle-build-action@v2
       with:
         gradle-version: 6.1.1
+    - name: Create key file
+      run: "echo $KEY_JKS | base64 -d > key.jks"
     - name: Collect Translation Files
       run: |
         cd lib/l10n
@@ -37,4 +44,8 @@ jobs:
       run: |
         flutter pub get
         cp lib/dummy_dsn.dart lib/dsn.dart
-        flutter build apk --debug
+        flutter build apk --target-platform android-arm,android-arm64,android-x64 --split-per-abi
+    - uses: actions/upload-artifact@v3
+      with:
+        name: apk-release
+        path: build/app/outputs/apk/release/
